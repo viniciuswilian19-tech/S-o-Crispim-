@@ -404,8 +404,8 @@
     .js .reveal.visivel { opacity: 1; transform: none; }
 
     /* Cartões reagem ao passar o mouse */
-    .card-horario, .card, .padre-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
-    .card-horario:hover, .card:hover, .padre-card:hover {
+    .card-horario, .card, .padre-card, .liturgia-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .card-horario:hover, .card:hover, .padre-card:hover, .liturgia-card:hover {
       transform: translateY(-6px);
       box-shadow: 0 12px 24px rgba(79, 13, 20, 0.15);
     }
@@ -437,6 +437,19 @@
       font: 700 0.68rem Arial, sans-serif; letter-spacing: 0.06em; text-transform: uppercase;
       animation: pulso 2s ease-in-out infinite;
     }
+
+    /* Liturgia diária */
+    .liturgia-secao { background: linear-gradient(160deg, var(--vinho-escuro), var(--vinho)); }
+    .liturgia-secao .titulo-secao h2 { color: var(--branco); }
+    .liturgia-card {
+      max-width: 640px; margin: 0 auto; padding: 2rem 1.6rem; text-align: center;
+      background: var(--creme); border: 1px solid var(--dourado); border-top: 4px solid var(--dourado);
+      border-radius: 8px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    }
+    .liturgia-card .icone-horario { margin-bottom: 0.3rem; }
+    .liturgia-data { font-size: 1.3rem; font-weight: bold; color: var(--vinho-escuro); margin-bottom: 0.4rem; }
+    .liturgia-card .botoes { margin: 1.2rem 0 1rem; }
+    .liturgia-fonte { font-size: 0.8rem; color: #6b6b6b; font-style: italic; }
 
     /* Anos de história */
     .anos { text-align: center; margin-top: 1.8rem; }
@@ -497,6 +510,7 @@
           <li><a href="#inicio">Início</a></li>
           <li><a href="#sobre">Paróquia</a></li>
           <li><a href="#horarios">Horários</a></li>
+          <li><a href="#liturgia">Liturgia</a></li>
           <li><a href="#atendimento">Atendimento</a></li>
           <li><a href="#localizacao">Localização</a></li>
         </ul>
@@ -621,6 +635,24 @@
             </div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Liturgia Diária: leva à página oficial (os textos são da CNBB/Canção Nova e não são copiados para cá) -->
+    <section class="liturgia-secao" id="liturgia">
+      <div class="container">
+        <div class="titulo-secao">
+          <h2>Liturgia Diária</h2>
+        </div>
+        <article class="liturgia-card">
+          <div class="icone-horario">📖</div>
+          <p class="liturgia-data" id="liturgia-data">Liturgia de hoje</p>
+          <p>Primeira Leitura, Salmo e Evangelho do dia, com áudio, no site da Canção Nova.</p>
+          <div class="botoes">
+            <a class="btn btn-vinho" href="https://liturgia.cancaonova.com/pb/" target="_blank" rel="noopener noreferrer">Ler a liturgia de hoje</a>
+          </div>
+          <p class="liturgia-fonte">Textos: CNBB e Canção Nova. Todos os direitos reservados aos autores.</p>
+        </article>
       </div>
     </section>
 
