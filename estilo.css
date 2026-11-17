@@ -1,0 +1,514 @@
+/* Paróquia São Crispim - Estilos Unificados */
+:root {
+  --vinho: #7a1620;
+  --vinho-escuro: #4f0d14;
+  --dourado: #c9a24a;
+  --dourado-claro: #e8d49a;
+  --creme: #faf6ee;
+  --texto: #2b2b2b;
+  --branco: #ffffff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "Georgia", "Times New Roman", serif;
+  color: var(--texto);
+  background: var(--creme);
+  line-height: 1.7;
+}
+
+h1, h2, h3 { font-family: "Georgia", serif; line-height: 1.25; }
+a { color: inherit; }
+
+.container {
+  width: min(1100px, 92%);
+  margin: 0 auto;
+}
+
+/* ---------- Cabeçalho ---------- */
+header {
+  background: var(--vinho-escuro);
+  border-bottom: 3px solid var(--dourado);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  text-decoration: none;
+  color: var(--branco);
+}
+
+.brand img { height: 50px; width: auto; }
+
+.brand span {
+  font-size: 1.15rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: var(--dourado-claro);
+  text-decoration: none;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+nav a:hover { color: var(--branco); border-color: var(--dourado); }
+
+/* ---------- Hero ---------- */
+.hero {
+  /* Foto de fundo com camada escura por cima para reduzir o brilho */
+  background:
+    linear-gradient(160deg, rgba(79, 13, 20, 0.78) 0%, rgba(45, 6, 10, 0.88) 100%),
+    url("fundo.png") center 25% / cover no-repeat;
+  background-color: var(--vinho-escuro);
+  color: var(--branco);
+  text-align: center;
+  padding: 3.5rem 0 4rem;
+}
+
+.hero img {
+  width: 140px;
+  max-width: 40%;
+  height: auto;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+}
+
+.hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 0.6rem; }
+
+.hero p {
+  max-width: 640px;
+  margin: 0 auto 1.8rem;
+  color: var(--dourado-claro);
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+.botoes { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  font-size: 0.9rem;
+  transition: transform 0.15s, background 0.2s;
+}
+
+.btn:hover { transform: translateY(-2px); }
+.btn-ouro { background: var(--dourado); color: var(--vinho-escuro); }
+.btn-borda { border: 2px solid var(--dourado); color: var(--branco); }
+.btn-vinho { background: var(--vinho); color: var(--branco); }
+.btn-vinho-borda { border: 2px solid var(--vinho); color: var(--vinho); }
+
+/* ---------- Seções Comuns ---------- */
+section { padding: 3rem 0; }
+.titulo-secao { text-align: center; margin-bottom: 2rem; }
+.titulo-secao h1,
+.titulo-secao h2 {
+  font-size: 2rem;
+  color: var(--vinho-escuro);
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+.titulo-secao h1::after,
+.titulo-secao h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  width: 50%;
+  height: 2px;
+  background: var(--dourado);
+}
+
+/* ---------- Sobre ---------- */
+.sobre p {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 1rem;
+  font-size: 1.05rem;
+}
+
+/* ---------- Horários ---------- */
+.horarios-secao { background-color: var(--branco); }
+.grid-horarios {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.grid-missas { margin-bottom: 2.5rem; }
+.grid-votivas,
+.grid-confissoes { grid-template-columns: minmax(280px, 640px); justify-content: center; }
+
+.sub-titulo {
+  text-align: center;
+  color: var(--vinho-escuro);
+  font-size: 1.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.card-horario {
+  background: var(--creme);
+  border: 1px solid var(--dourado-claro);
+  border-top: 4px solid var(--vinho);
+  border-radius: 8px;
+  padding: 1.8rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.icone-horario { font-size: 2.2rem; margin-bottom: 0.5rem; }
+.card-horario h3 { color: var(--vinho-escuro); font-size: 1.3rem; margin-bottom: 1rem; }
+
+.lista-horarios { list-style: none; padding: 0; text-align: left; }
+.lista-horarios li {
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed var(--dourado-claro);
+  font-size: 0.95rem;
+}
+.lista-horarios li:last-child { border-bottom: none; }
+
+.alerta-agendamento {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 6px;
+  color: #856404;
+  font-size: 0.88rem;
+  text-align: left;
+}
+
+/* ---------- Clero ---------- */
+.clero-container {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid var(--dourado-claro);
+}
+
+.clero-container h3 {
+  color: var(--vinho-escuro);
+  font-size: 1.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.clero-grid {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.padre-card {
+  background: var(--creme);
+  border: 1px solid var(--dourado);
+  border-radius: 8px;
+  padding: 1.2rem 2rem;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.padre-card .cargo {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vinho);
+  font-weight: bold;
+}
+
+.padre-card strong { font-size: 1.05rem; color: var(--texto); }
+
+/* ---------- Atendimento (Cards) ---------- */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: var(--branco);
+  border: 1px solid var(--dourado-claro);
+  border-radius: 8px;
+  padding: 1.8rem;
+  text-align: center;
+}
+
+.card .icone { font-size: 2.2rem; margin-bottom: 0.5rem; }
+.card h3 { color: var(--vinho-escuro); margin-bottom: 0.8rem; font-size: 1.2rem; }
+.card p { font-size: 0.95rem; }
+.card a { color: var(--vinho); text-decoration: none; font-weight: bold; }
+
+/* ---------- Localização ---------- */
+.mapa {
+  margin-top: 1.5rem;
+  width: 100%;
+  height: 380px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid var(--dourado);
+}
+
+.mapa iframe { width: 100%; height: 100%; border: 0; }
+
+/* ---------- Rodapé ---------- */
+footer {
+  background: var(--vinho-escuro);
+  color: var(--dourado-claro);
+  text-align: center;
+  padding: 2.5rem 0;
+  border-top: 3px solid var(--dourado);
+  font-size: 0.9rem;
+}
+
+footer img { height: 50px; margin-bottom: 0.8rem; }
+footer p { margin-bottom: 0.4rem; }
+footer a { color: var(--dourado-claro); text-decoration: underline; }
+footer .copy { margin-top: 1.2rem; font-size: 0.8rem; color: #ccc; }
+footer .dev { margin-top: 0.3rem; }
+
+/* ---------- Ajustes gerais para celular, tablet e computador ---------- */
+html { -webkit-text-size-adjust: 100%; }
+img { max-width: 100%; }
+h1, h2, h3, p, li, a { overflow-wrap: break-word; }
+section[id] { scroll-margin-top: 90px; }
+
+/* Tablet e telas menores */
+@media (max-width: 900px) {
+  .header-inner { justify-content: center; text-align: center; }
+  nav ul { justify-content: center; }
+}
+
+/* Celular */
+@media (max-width: 600px) {
+  header { position: static; }
+  section[id] { scroll-margin-top: 0; }
+
+  .brand img { height: 42px; }
+  .brand span { font-size: 1rem; }
+
+  nav ul { gap: 0.4rem 0.9rem; }
+  nav a { font-size: 0.78rem; letter-spacing: 0.04em; }
+
+  .hero { padding: 2.5rem 0 3rem; }
+  .hero img { width: 110px; }
+  .hero p { font-size: 1.05rem; }
+
+  section { padding: 2.2rem 0; }
+  .titulo-secao { margin-bottom: 1.5rem; }
+  .titulo-secao h1, .titulo-secao h2 { font-size: 1.6rem; }
+  .sub-titulo { font-size: 1.2rem; }
+
+  .sobre p { font-size: 1rem; text-align: left; }
+
+  .botoes { flex-direction: column; align-items: center; gap: 0.7rem; }
+  .btn { width: 100%; max-width: 320px; text-align: center; }
+
+  .grid-horarios { gap: 1.2rem; }
+  .card-horario { padding: 1.3rem 1.1rem; }
+  .card { padding: 1.4rem 1.1rem; }
+
+  .padre-card { min-width: 0; width: 100%; padding: 1rem 1.2rem; }
+
+  .grid-votivas,
+  .grid-confissoes { grid-template-columns: 1fr; }
+
+  footer { padding: 2rem 0; }
+}
+/* ---------- Animações e interatividade ---------- */
+a:focus-visible, button:focus-visible { outline: 3px solid var(--dourado); outline-offset: 3px; }
+
+.progresso {
+  position: fixed; top: 0; left: 0; width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--dourado), var(--dourado-claro));
+  transform: scaleX(0); transform-origin: 0 50%;
+  z-index: 30; pointer-events: none;
+}
+
+header { transition: box-shadow 0.3s; }
+header.rolou { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35); }
+nav a.ativo { color: var(--branco); border-color: var(--dourado); }
+
+.menu-btn {
+  display: none; width: 44px; height: 44px; border-radius: 8px;
+  border: 2px solid var(--dourado); background: transparent;
+  color: var(--dourado-claro); font-size: 1.4rem; line-height: 1; cursor: pointer;
+}
+
+/* Entrada do topo da página */
+@keyframes subir { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes pulso { 0%, 100% { box-shadow: 0 0 0 0 rgba(122, 22, 32, 0.45); } 50% { box-shadow: 0 0 0 6px rgba(122, 22, 32, 0); } }
+
+.js .hero .container > * { animation: subir 0.8s ease both; }
+.js .hero .container > :nth-child(2) { animation-delay: 0.12s; }
+.js .hero .container > :nth-child(3) { animation-delay: 0.24s; }
+.js .hero .container > :nth-child(4) { animation-delay: 0.36s; }
+.js .hero .container > img { animation: subir 0.8s ease both, flutuar 6s ease-in-out 1s infinite; }
+
+/* Aparecer ao rolar (a classe .reveal é colocada pelo script.js) */
+.js .reveal {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition-delay: var(--atraso, 0s);
+}
+.js .reveal.visivel { opacity: 1; transform: none; }
+
+/* Cartões reagem ao passar o mouse */
+.card-horario, .card, .padre-card, .liturgia-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.card-horario:hover, .card:hover, .padre-card:hover, .liturgia-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(79, 13, 20, 0.15);
+}
+button.btn { cursor: pointer; font-family: Arial, sans-serif; background: transparent; }
+.btn[hidden] { display: none; }
+.btn-vinho-borda:hover { background: var(--vinho); color: var(--branco); }
+.btn-ouro:hover { background: var(--dourado-claro); }
+
+/* Próxima missa */
+.proxima-missa {
+  max-width: 640px; margin: 0 auto 2rem; padding: 1rem 1.4rem; text-align: center;
+  color: var(--branco); border: 1px solid var(--dourado); border-radius: 10px;
+  background: linear-gradient(135deg, var(--vinho), var(--vinho-escuro));
+  box-shadow: 0 8px 20px rgba(79, 13, 20, 0.25);
+}
+.proxima-missa[hidden] { display: none; }
+.proxima-missa small {
+  display: block; color: var(--dourado-claro); font-family: Arial, sans-serif;
+  font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.proxima-missa strong { display: block; font-size: 1.3rem; margin: 0.2rem 0; }
+.proxima-missa span { color: var(--dourado-claro); font-size: 0.95rem; }
+
+/* Destaque do dia de hoje */
+.lista-horarios li.hoje { background: rgba(201, 162, 74, 0.18); border-radius: 6px; padding-left: 0.6rem; padding-right: 0.6rem; }
+.badge-hoje {
+  display: inline-block; margin-left: 0.5rem; padding: 0.05rem 0.55rem; border-radius: 999px;
+  background: var(--vinho); color: var(--branco); vertical-align: middle;
+  font: 700 0.68rem Arial, sans-serif; letter-spacing: 0.06em; text-transform: uppercase;
+  animation: pulso 2s ease-in-out infinite;
+}
+
+/* Liturgia diária */
+.liturgia-secao { background: linear-gradient(160deg, var(--vinho-escuro), var(--vinho)); }
+.liturgia-secao .titulo-secao h2 { color: var(--branco); }
+.liturgia-card {
+  max-width: 640px; margin: 0 auto; padding: 2rem 1.6rem; text-align: center;
+  background: var(--creme); border: 1px solid var(--dourado); border-top: 4px solid var(--dourado);
+  border-radius: 8px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+.liturgia-card .icone-horario { margin-bottom: 0.3rem; }
+.liturgia-data { font-size: 1.3rem; font-weight: bold; color: var(--vinho-escuro); margin-bottom: 0.4rem; }
+.liturgia-card .botoes { margin: 1.2rem 0 1rem; }
+.liturgia-fonte { font-size: 0.8rem; color: #6b6b6b; font-style: italic; }
+
+/* Anos de história */
+.anos { text-align: center; margin-top: 1.8rem; }
+.anos .num { display: block; font-size: 3.2rem; font-weight: bold; color: var(--vinho); line-height: 1; }
+.anos .legenda { color: var(--vinho-escuro); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.85rem; }
+
+/* Voltar ao topo e aviso */
+.topo {
+  position: fixed; right: 1.2rem; bottom: 1.2rem; width: 48px; height: 48px; border-radius: 50%;
+  border: 2px solid var(--dourado); background: var(--vinho-escuro); color: var(--dourado-claro);
+  font-size: 1.3rem; cursor: pointer; z-index: 20;
+  opacity: 0; transform: translateY(12px); pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.topo.mostrar { opacity: 1; transform: none; pointer-events: auto; }
+.toast {
+  position: fixed; left: 50%; bottom: 1.5rem; transform: translate(-50%, 20px); z-index: 40;
+  padding: 0.7rem 1.2rem; border-radius: 999px; border: 1px solid var(--dourado);
+  background: var(--vinho-escuro); color: var(--dourado-claro); font: 0.9rem Arial, sans-serif;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s;
+}
+.toast.mostrar { opacity: 1; transform: translate(-50%, 0); }
+
+/* Menu em formato de botão no celular (só quando o JavaScript está ativo) */
+@media (max-width: 600px) {
+  .menu-js .menu-btn { display: inline-flex; align-items: center; justify-content: center; }
+  .menu-js .header-inner { justify-content: space-between; text-align: left; }
+  .menu-js nav { display: none; width: 100%; }
+  .menu-js nav.aberto { display: block; animation: subir 0.3s ease both; }
+  .menu-js nav ul { flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.4rem 0 0.6rem; }
+  .menu-js nav a { display: block; padding: 0.6rem 1rem; font-size: 0.9rem; }
+}
+
+/* Respeita quem prefere menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important;
+  }
+  .js .reveal { opacity: 1; transform: none; }
+}
+
+/* ---------- Página da Liturgia Diária ---------- */
+.liturgia-pagina { background: var(--creme); min-height: 60vh; }
+.liturgia-nav { display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center; align-items: center; margin-bottom: 2rem; }
+.liturgia-nav[hidden] { display: none; }
+.liturgia-nav input[type="date"] {
+  padding: 0.55rem 0.8rem; border: 2px solid var(--dourado); border-radius: 8px;
+  background: var(--branco); color: var(--vinho-escuro); font: 1rem Georgia, serif;
+}
+.liturgia-dia { text-align: center; color: var(--vinho-escuro); font-size: 1.7rem; margin-bottom: 0.3rem; }
+.liturgia-celebracao { text-align: center; font-weight: bold; font-size: 1.1rem; }
+.liturgia-cor {
+  text-align: center; color: var(--vinho); font: 0.85rem Arial, sans-serif;
+  letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.6rem;
+}
+.liturgia-leitura {
+  max-width: 760px; margin: 0 auto 1.4rem; padding: 1.5rem 1.6rem; background: var(--branco);
+  border: 1px solid var(--dourado-claro); border-left: 5px solid var(--vinho); border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.liturgia-leitura h3 { color: var(--vinho-escuro); font-size: 1.25rem; margin-bottom: 0.8rem; }
+.liturgia-leitura .referencia { display: block; color: var(--vinho); font-size: 0.95rem; font-weight: normal; margin-top: 0.15rem; }
+.liturgia-leitura p { margin-bottom: 0.7rem; font-size: 1.05rem; }
+.liturgia-leitura .refrao { font-weight: bold; color: var(--vinho-escuro); }
+.liturgia-leitura .verso { margin-bottom: 0.3rem; }
+.liturgia-aviso {
+  max-width: 640px; margin: 0 auto; padding: 1.2rem; text-align: center; background: var(--branco);
+  border: 1px dashed var(--dourado); border-radius: 8px;
+}
+.liturgia-aviso a { color: var(--vinho); font-weight: bold; }
+.liturgia-pagina .liturgia-fonte { text-align: center; margin-top: 1rem; }
+@media (max-width: 600px) {
+  .liturgia-dia { font-size: 1.4rem; }
+  .liturgia-leitura { padding: 1.2rem 1rem; }
+}
