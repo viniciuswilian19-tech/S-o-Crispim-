@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Paróquia São Crispim</title>
   <!-- ===== Segurança ===== -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'; script-src 'sha256-tMnmuzDRde2s+6o+k1AAF41il9rTlUhlKAPVMnQZUaE='; base-uri 'none'; form-action 'none'; connect-src 'none'; object-src 'none'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'; script-src 'self' 'sha256-65LQZOquRCkkr/KPNwzK7pAOBOtvfO5ftrjAH5pYu9U='; base-uri 'none'; form-action 'none'; connect-src 'none'; object-src 'none'; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="robots" content="index, follow">
   <!-- Anti-clickjacking: esconde a página se ela for carregada dentro de outro site -->
   <style id="fb">html{display:none !important}</style>
   <noscript><style>html{display:block !important}</style></noscript>
-  <script>if(self===top){var e=document.getElementById('fb');if(e)e.remove();}else{try{top.location=self.location;}catch(x){}}</script>
+  <script>document.documentElement.classList.add('js');if(self===top){var e=document.getElementById('fb');if(e)e.remove();}else{try{top.location=self.location;}catch(x){}}</script>
 
   <style>
     /* Paróquia São Crispim - Estilos Unificados */
@@ -363,9 +363,125 @@
 
       footer { padding: 2rem 0; }
     }
+    /* ---------- Animações e interatividade ---------- */
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--dourado); outline-offset: 3px; }
+
+    .progresso {
+      position: fixed; top: 0; left: 0; width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--dourado), var(--dourado-claro));
+      transform: scaleX(0); transform-origin: 0 50%;
+      z-index: 30; pointer-events: none;
+    }
+
+    header { transition: box-shadow 0.3s; }
+    header.rolou { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35); }
+    nav a.ativo { color: var(--branco); border-color: var(--dourado); }
+
+    .menu-btn {
+      display: none; width: 44px; height: 44px; border-radius: 8px;
+      border: 2px solid var(--dourado); background: transparent;
+      color: var(--dourado-claro); font-size: 1.4rem; line-height: 1; cursor: pointer;
+    }
+
+    /* Entrada do topo da página */
+    @keyframes subir { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+    @keyframes flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes pulso { 0%, 100% { box-shadow: 0 0 0 0 rgba(122, 22, 32, 0.45); } 50% { box-shadow: 0 0 0 6px rgba(122, 22, 32, 0); } }
+
+    .js .hero .container > * { animation: subir 0.8s ease both; }
+    .js .hero .container > :nth-child(2) { animation-delay: 0.12s; }
+    .js .hero .container > :nth-child(3) { animation-delay: 0.24s; }
+    .js .hero .container > :nth-child(4) { animation-delay: 0.36s; }
+    .js .hero .container > img { animation: subir 0.8s ease both, flutuar 6s ease-in-out 1s infinite; }
+
+    /* Aparecer ao rolar (a classe .reveal é colocada pelo script.js) */
+    .js .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+      transition-delay: var(--atraso, 0s);
+    }
+    .js .reveal.visivel { opacity: 1; transform: none; }
+
+    /* Cartões reagem ao passar o mouse */
+    .card-horario, .card, .padre-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .card-horario:hover, .card:hover, .padre-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgba(79, 13, 20, 0.15);
+    }
+    button.btn { cursor: pointer; font-family: Arial, sans-serif; background: transparent; }
+    .btn[hidden] { display: none; }
+    .btn-vinho-borda:hover { background: var(--vinho); color: var(--branco); }
+    .btn-ouro:hover { background: var(--dourado-claro); }
+
+    /* Próxima missa */
+    .proxima-missa {
+      max-width: 640px; margin: 0 auto 2rem; padding: 1rem 1.4rem; text-align: center;
+      color: var(--branco); border: 1px solid var(--dourado); border-radius: 10px;
+      background: linear-gradient(135deg, var(--vinho), var(--vinho-escuro));
+      box-shadow: 0 8px 20px rgba(79, 13, 20, 0.25);
+    }
+    .proxima-missa[hidden] { display: none; }
+    .proxima-missa small {
+      display: block; color: var(--dourado-claro); font-family: Arial, sans-serif;
+      font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .proxima-missa strong { display: block; font-size: 1.3rem; margin: 0.2rem 0; }
+    .proxima-missa span { color: var(--dourado-claro); font-size: 0.95rem; }
+
+    /* Destaque do dia de hoje */
+    .lista-horarios li.hoje { background: rgba(201, 162, 74, 0.18); border-radius: 6px; padding-left: 0.6rem; padding-right: 0.6rem; }
+    .badge-hoje {
+      display: inline-block; margin-left: 0.5rem; padding: 0.05rem 0.55rem; border-radius: 999px;
+      background: var(--vinho); color: var(--branco); vertical-align: middle;
+      font: 700 0.68rem Arial, sans-serif; letter-spacing: 0.06em; text-transform: uppercase;
+      animation: pulso 2s ease-in-out infinite;
+    }
+
+    /* Anos de história */
+    .anos { text-align: center; margin-top: 1.8rem; }
+    .anos .num { display: block; font-size: 3.2rem; font-weight: bold; color: var(--vinho); line-height: 1; }
+    .anos .legenda { color: var(--vinho-escuro); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.85rem; }
+
+    /* Voltar ao topo e aviso */
+    .topo {
+      position: fixed; right: 1.2rem; bottom: 1.2rem; width: 48px; height: 48px; border-radius: 50%;
+      border: 2px solid var(--dourado); background: var(--vinho-escuro); color: var(--dourado-claro);
+      font-size: 1.3rem; cursor: pointer; z-index: 20;
+      opacity: 0; transform: translateY(12px); pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .topo.mostrar { opacity: 1; transform: none; pointer-events: auto; }
+    .toast {
+      position: fixed; left: 50%; bottom: 1.5rem; transform: translate(-50%, 20px); z-index: 40;
+      padding: 0.7rem 1.2rem; border-radius: 999px; border: 1px solid var(--dourado);
+      background: var(--vinho-escuro); color: var(--dourado-claro); font: 0.9rem Arial, sans-serif;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s;
+    }
+    .toast.mostrar { opacity: 1; transform: translate(-50%, 0); }
+
+    /* Menu em formato de botão no celular (só quando o JavaScript está ativo) */
+    @media (max-width: 600px) {
+      .menu-js .menu-btn { display: inline-flex; align-items: center; justify-content: center; }
+      .menu-js .header-inner { justify-content: space-between; text-align: left; }
+      .menu-js nav { display: none; width: 100%; }
+      .menu-js nav.aberto { display: block; animation: subir 0.3s ease both; }
+      .menu-js nav ul { flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.4rem 0 0.6rem; }
+      .menu-js nav a { display: block; padding: 0.6rem 1rem; font-size: 0.9rem; }
+    }
+
+    /* Respeita quem prefere menos movimento */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important;
+      }
+      .js .reveal { opacity: 1; transform: none; }
+    }
   </style>
 </head>
 <body>
+
+  <div class="progresso" id="progresso" aria-hidden="true"></div>
 
   <!-- Cabeçalho -->
   <header>
@@ -374,7 +490,8 @@
         <img src="logo.png" alt="Brasão da Paróquia São Crispim">
         <span>Paróquia São Crispim</span>
       </a>
-      <nav>
+      <button type="button" class="menu-btn" id="menu-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-principal">&#9776;</button>
+      <nav id="menu-principal">
         <ul>
           <li><a href="#inicio">Início</a></li>
           <li><a href="#sobre">Paróquia</a></li>
@@ -410,6 +527,7 @@
         <p>A Paróquia São Crispim foi instalada, canonicamente, no dia 24 de outubro de 1999, sendo desmembrada da Paróquia São Benedito, tendo Pe. Devair Araújo da Fonseca como primeiro pároco.</p>
         <p>Territorialmente, faz divisa com a Paróquia Santa Teresinha, Paróquia Santa Edwiges, Paróquia Santa Gianna, Paróquia Nossa Senhora da Abadia e Paróquia Divino Espírito Santo de Claraval – MG.</p>
         <p>Recebeu como patrono São Crispim, por ser intercessor dos sapateiros e operários, indicação da família Betarelo, que doou o terreno onde foi construída a igreja matriz.</p>
+        <div class="anos"><span class="num" data-desde="1999-10-24">27</span><span class="legenda">anos de história</span></div>
       </div>
     </section>
 
@@ -420,6 +538,9 @@
           <h2>Missas & Confissões</h2>
         </div>
 
+        <!-- Preenchido pelo script.js com a próxima missa -->
+        <div class="proxima-missa" id="proxima-missa" role="status" aria-live="polite" hidden></div>
+
         <!-- Missas: Matriz e Capelas -->
         <h3 class="sub-titulo">Missas na Matriz e Capelas</h3>
         <div class="grid-horarios grid-missas">
@@ -427,10 +548,10 @@
             <div class="icone-horario">⛪</div>
             <h3>Matriz São Crispim</h3>
             <ul class="lista-horarios">
-              <li><strong>Terça à Sexta-feira</strong> às 07h00</li>
-              <li><strong>Sexta-feira</strong> às 19h30</li>
-              <li><strong>Sábado</strong> às 19h00</li>
-              <li><strong>Domingo</strong> às 08h00 e 19h00</li>
+              <li data-dias="2,3,4,5" data-hora="07:00"><strong>Terça à Sexta-feira</strong> às 07h00</li>
+              <li data-dias="5" data-hora="19:30"><strong>Sexta-feira</strong> às 19h30</li>
+              <li data-dias="6" data-hora="19:00"><strong>Sábado</strong> às 19h00</li>
+              <li data-dias="0" data-hora="08:00,19:00"><strong>Domingo</strong> às 08h00 e 19h00</li>
             </ul>
           </article>
 
@@ -438,8 +559,8 @@
             <div class="icone-horario">🕯️</div>
             <h3>Capela Santa Cruz</h3>
             <ul class="lista-horarios">
-              <li><strong>Terça-feira</strong> às 19h30</li>
-              <li><strong>Domingo</strong> às 08h00</li>
+              <li data-dias="2" data-hora="19:30"><strong>Terça-feira</strong> às 19h30</li>
+              <li data-dias="0" data-hora="08:00"><strong>Domingo</strong> às 08h00</li>
             </ul>
           </article>
 
@@ -447,8 +568,8 @@
             <div class="icone-horario">🕯️</div>
             <h3>Capela São Miguel</h3>
             <ul class="lista-horarios">
-              <li><strong>Quarta-feira</strong> às 19h30</li>
-              <li><strong>Domingo</strong> às 09h30</li>
+              <li data-dias="3" data-hora="19:30"><strong>Quarta-feira</strong> às 19h30</li>
+              <li data-dias="0" data-hora="09:30"><strong>Domingo</strong> às 09h30</li>
             </ul>
           </article>
         </div>
@@ -460,8 +581,8 @@
             <div class="icone-horario">🕯️</div>
             <h3>Capela Nossa Senhora Mãe da Divina Providência</h3>
             <ul class="lista-horarios">
-              <li><strong>Quinta-feira</strong> às 19h30</li>
-              <li><strong>Domingo</strong> às 19h00</li>
+              <li data-dias="4" data-hora="19:30"><strong>Quinta-feira</strong> às 19h30</li>
+              <li data-dias="0" data-hora="19:00"><strong>Domingo</strong> às 19h00</li>
             </ul>
           </article>
         </div>
@@ -472,8 +593,8 @@
             <div class="icone-horario">✝️</div>
             <h3>Atendimento de Confissões</h3>
             <ul class="lista-horarios">
-              <li><strong>Terça a Sexta:</strong> 09:00 às 12:00 e 14:00 às 16:30</li>
-              <li><strong>Sábado:</strong> 09:00 às 12:00</li>
+              <li data-dias="2,3,4,5"><strong>Terça a Sexta:</strong> 09:00 às 12:00 e 14:00 às 16:30</li>
+              <li data-dias="6"><strong>Sábado:</strong> 09:00 às 12:00</li>
             </ul>
             <div class="alerta-agendamento">
               ⚠️ <strong>Observação:</strong> Para todos os dias é necessário o <strong>agendamento prévio de horário</strong> na Secretaria Paroquial.
@@ -552,6 +673,7 @@
         <div class="botoes" style="margin-top:1.5rem;">
           <a class="btn btn-vinho" href="https://www.google.com/maps/dir/?api=1&destination=Av.+Theodomiro Ramos,+760+-+Jardim+Ipanema,+Franca+-+SP,+14409-544" target="_blank" rel="noopener">Traçar rota até a Paróquia</a>
           <a class="btn btn-vinho-borda" href="https://www.google.com/maps/search/?api=1&query=Av.+Theodomiro+Ramos,+760+-+Jardim+Ipanema,+Franca+-+SP,+14409-544" target="_blank" rel="noopener">Abrir no Google Maps</a>
+          <button type="button" class="btn btn-vinho-borda" id="copiar-endereco" data-copiar="Av. Theodomiro Ramos, 760 - Jardim Ipanema, Franca - SP, 14409-544" hidden>Copiar endereço</button>
         </div>
 
         <!-- Localização das Capelas -->
@@ -595,5 +717,9 @@
     </div>
   </footer>
 
+  <button type="button" class="topo" id="topo" aria-label="Voltar ao topo" tabindex="-1">&#8593;</button>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
