@@ -133,7 +133,6 @@ nav a:hover { color: var(--branco); border-color: var(--dourado); }
 /* ---------- Seções Comuns ---------- */
 section { padding: 3rem 0; }
 .titulo-secao { text-align: center; margin-bottom: 2rem; }
-.titulo-secao h1,
 .titulo-secao h2 {
   font-size: 2rem;
   color: var(--vinho-escuro);
@@ -141,7 +140,6 @@ section { padding: 3rem 0; }
   display: inline-block;
   padding-bottom: 0.5rem;
 }
-.titulo-secao h1::after,
 .titulo-secao h2::after {
   content: "";
   position: absolute;
@@ -331,7 +329,7 @@ section[id] { scroll-margin-top: 90px; }
 
   section { padding: 2.2rem 0; }
   .titulo-secao { margin-bottom: 1.5rem; }
-  .titulo-secao h1, .titulo-secao h2 { font-size: 1.6rem; }
+  .titulo-secao h2 { font-size: 1.6rem; }
   .sub-titulo { font-size: 1.2rem; }
 
   .sobre p { font-size: 1rem; text-align: left; }
@@ -390,8 +388,8 @@ nav a.ativo { color: var(--branco); border-color: var(--dourado); }
 .js .reveal.visivel { opacity: 1; transform: none; }
 
 /* Cartões reagem ao passar o mouse */
-.card-horario, .card, .padre-card, .liturgia-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
-.card-horario:hover, .card:hover, .padre-card:hover, .liturgia-card:hover {
+.card-horario, .card, .padre-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.card-horario:hover, .card:hover, .padre-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 24px rgba(79, 13, 20, 0.15);
 }
@@ -423,19 +421,6 @@ button.btn { cursor: pointer; font-family: Arial, sans-serif; background: transp
   font: 700 0.68rem Arial, sans-serif; letter-spacing: 0.06em; text-transform: uppercase;
   animation: pulso 2s ease-in-out infinite;
 }
-
-/* Liturgia diária */
-.liturgia-secao { background: linear-gradient(160deg, var(--vinho-escuro), var(--vinho)); }
-.liturgia-secao .titulo-secao h2 { color: var(--branco); }
-.liturgia-card {
-  max-width: 640px; margin: 0 auto; padding: 2rem 1.6rem; text-align: center;
-  background: var(--creme); border: 1px solid var(--dourado); border-top: 4px solid var(--dourado);
-  border-radius: 8px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
-}
-.liturgia-card .icone-horario { margin-bottom: 0.3rem; }
-.liturgia-data { font-size: 1.3rem; font-weight: bold; color: var(--vinho-escuro); margin-bottom: 0.4rem; }
-.liturgia-card .botoes { margin: 1.2rem 0 1rem; }
-.liturgia-fonte { font-size: 0.8rem; color: #6b6b6b; font-style: italic; }
 
 /* Anos de história */
 .anos { text-align: center; margin-top: 1.8rem; }
@@ -476,39 +461,4 @@ button.btn { cursor: pointer; font-family: Arial, sans-serif; background: transp
     transition-duration: 0.01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important;
   }
   .js .reveal { opacity: 1; transform: none; }
-}
-
-/* ---------- Página da Liturgia Diária ---------- */
-.liturgia-pagina { background: var(--creme); min-height: 60vh; }
-.liturgia-nav { display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center; align-items: center; margin-bottom: 2rem; }
-.liturgia-nav[hidden] { display: none; }
-.liturgia-nav input[type="date"] {
-  padding: 0.55rem 0.8rem; border: 2px solid var(--dourado); border-radius: 8px;
-  background: var(--branco); color: var(--vinho-escuro); font: 1rem Georgia, serif;
-}
-.liturgia-dia { text-align: center; color: var(--vinho-escuro); font-size: 1.7rem; margin-bottom: 0.3rem; }
-.liturgia-celebracao { text-align: center; font-weight: bold; font-size: 1.1rem; }
-.liturgia-cor {
-  text-align: center; color: var(--vinho); font: 0.85rem Arial, sans-serif;
-  letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.6rem;
-}
-.liturgia-leitura {
-  max-width: 760px; margin: 0 auto 1.4rem; padding: 1.5rem 1.6rem; background: var(--branco);
-  border: 1px solid var(--dourado-claro); border-left: 5px solid var(--vinho); border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-.liturgia-leitura h3 { color: var(--vinho-escuro); font-size: 1.25rem; margin-bottom: 0.8rem; }
-.liturgia-leitura .referencia { display: block; color: var(--vinho); font-size: 0.95rem; font-weight: normal; margin-top: 0.15rem; }
-.liturgia-leitura p { margin-bottom: 0.7rem; font-size: 1.05rem; }
-.liturgia-leitura .refrao { font-weight: bold; color: var(--vinho-escuro); }
-.liturgia-leitura .verso { margin-bottom: 0.3rem; }
-.liturgia-aviso {
-  max-width: 640px; margin: 0 auto; padding: 1.2rem; text-align: center; background: var(--branco);
-  border: 1px dashed var(--dourado); border-radius: 8px;
-}
-.liturgia-aviso a { color: var(--vinho); font-weight: bold; }
-.liturgia-pagina .liturgia-fonte { text-align: center; margin-top: 1rem; }
-@media (max-width: 600px) {
-  .liturgia-dia { font-size: 1.4rem; }
-  .liturgia-leitura { padding: 1.2rem 1rem; }
 }

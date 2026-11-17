@@ -116,23 +116,10 @@
     caixa.hidden = false;
   }
 
-  /* ---------- Data da liturgia diária (a página só leva ao texto oficial) ---------- */
-  function atualizarDataLiturgia() {
-    var el = $('#liturgia-data');
-    if (!el) return;
-    try {
-      var texto = new Intl.DateTimeFormat('pt-BR', {
-        timeZone: FUSO, weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-      }).format(new Date());
-      el.textContent = texto.charAt(0).toUpperCase() + texto.slice(1);
-    } catch (e) { /* mantém o texto padrão do HTML */ }
-  }
-
   var missas = coletarMissas();
   marcarHoje();
   atualizarProximaMissa(missas);
-  atualizarDataLiturgia();
-  setInterval(function () { marcarHoje(); atualizarProximaMissa(missas); atualizarDataLiturgia(); }, 30000);
+  setInterval(function () { marcarHoje(); atualizarProximaMissa(missas); }, 30000);
 
   /* ---------- Menu no celular ---------- */
   var botaoMenu = $('#menu-btn');
@@ -206,7 +193,7 @@
   }
 
   /* ---------- Aparecer ao rolar ---------- */
-  var alvos = $$('.titulo-secao, .sobre p, .anos, .sub-titulo, .card-horario, .liturgia-card, .padre-card, .clero-container h3, .card, #localizacao .botoes, .proxima-missa');
+  var alvos = $$('.titulo-secao, .sobre p, .anos, .sub-titulo, .card-horario, .padre-card, .clero-container h3, .card, #localizacao .botoes, .proxima-missa');
 
   if (!('IntersectionObserver' in window) || reduzMovimento) {
     alvos.forEach(function (el) { el.classList.add('visivel'); });
