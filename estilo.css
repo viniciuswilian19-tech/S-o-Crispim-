@@ -83,14 +83,40 @@ nav a:hover { color: var(--branco); border-color: var(--dourado); }
 
 /* ---------- Hero ---------- */
 .hero {
-  /* Foto de fundo com camada escura por cima para reduzir o brilho */
-  background:
-    linear-gradient(160deg, rgba(79, 13, 20, 0.78) 0%, rgba(45, 6, 10, 0.88) 100%),
-    url("fundo.png") center 25% / cover no-repeat;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   background-color: var(--vinho-escuro);
   color: var(--branco);
   text-align: center;
   padding: 3.5rem 0 4rem;
+}
+
+/* Foto de fundo numa camada própria; o script a move mais devagar que a página (profundidade) */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -12% 0;
+  z-index: -2;
+  background: url("fundo.png") center 25% / cover no-repeat;
+  transform: translate3d(0, var(--par, 0px), 0);
+  will-change: transform;
+}
+
+/* Camada escura por cima da foto para reduzir o brilho */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(160deg, rgba(79, 13, 20, 0.78) 0%, rgba(45, 6, 10, 0.88) 100%);
+}
+
+/* Envoltório do brasão: inclina em 3D conforme o mouse (o script define --rx e --ry) */
+.logo-3d {
+  display: inline-block;
+  transform: perspective(700px) rotateY(var(--ry, 0deg)) rotateX(var(--rx, 0deg));
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .hero img {
@@ -121,10 +147,12 @@ nav a:hover { color: var(--branco); border-color: var(--dourado); }
   font-weight: bold;
   font-family: Arial, sans-serif;
   font-size: 0.9rem;
-  transition: transform 0.15s, background 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, background 0.25s ease, color 0.25s ease;
 }
 
-.btn:hover { transform: translateY(-2px); }
+.btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 22px rgba(0, 0, 0, 0.28); }
+.btn:active { transform: translateY(0) scale(0.98); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25); transition-duration: 0.1s; }
 .btn-ouro { background: var(--dourado); color: var(--vinho-escuro); }
 .btn-borda { border: 2px solid var(--dourado); color: var(--branco); }
 .btn-vinho { background: var(--vinho); color: var(--branco); }
@@ -354,7 +382,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--dourado); outli
 .progresso {
   position: fixed; top: 0; left: 0; width: 100%; height: 3px;
   background: linear-gradient(90deg, var(--dourado), var(--dourado-claro));
-  transform: scaleX(0); transform-origin: 0 50%;
+  transform: scaleX(0); transform-origin: 0 50%; transition: transform 0.15s ease-out;
   z-index: 30; pointer-events: none;
 }
 
@@ -369,23 +397,36 @@ nav a.ativo { color: var(--branco); border-color: var(--dourado); }
 }
 
 /* Entrada do topo da página */
+@keyframes subir3d { from { opacity: 0; transform: perspective(900px) translateY(30px) rotateX(-22deg); } to { opacity: 1; transform: none; } }
+@keyframes girar { from { opacity: 0; transform: perspective(700px) rotateY(-85deg) scale(0.7); } to { opacity: 1; transform: perspective(700px) rotateY(0deg) scale(1); } }
 @keyframes subir { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 @keyframes flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 @keyframes pulso { 0%, 100% { box-shadow: 0 0 0 0 rgba(122, 22, 32, 0.45); } 50% { box-shadow: 0 0 0 6px rgba(122, 22, 32, 0); } }
 
-.js .hero .container > * { animation: subir 0.8s ease both; }
+.js .hero .container > * { animation: subir3d 1s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .js .hero .container > :nth-child(2) { animation-delay: 0.12s; }
 .js .hero .container > :nth-child(3) { animation-delay: 0.24s; }
 .js .hero .container > :nth-child(4) { animation-delay: 0.36s; }
-.js .hero .container > img { animation: subir 0.8s ease both, flutuar 6s ease-in-out 1s infinite; }
+.js .hero .container > .logo-3d { animation: girar 1.2s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+.js .hero .logo-3d img { animation: flutuar 6s ease-in-out 1.2s infinite; }
 
 /* Aparecer ao rolar (a classe .reveal é colocada pelo script.js) */
 .js .reveal {
-  opacity: 0; transform: translateY(28px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  opacity: 0;
+  transform: perspective(900px) translate3d(0, 36px, -60px) rotateX(-14deg) rotateY(var(--giro, 0deg));
+  transform-origin: 50% 100%;
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--atraso, 0s);
 }
-.js .reveal.visivel { opacity: 1; transform: none; }
+.js .reveal.visivel { opacity: 1; transform: perspective(900px) translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg); }
+
+/* A linha dourada dos títulos se abre do centro */
+.titulo-secao h2::after { transform-origin: center; transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.25s; }
+.js .titulo-secao.reveal h2::after { transform: scaleX(0); }
+.js .titulo-secao.reveal.visivel h2::after { transform: scaleX(1); }
+
+/* Rolagem animada pelo script (evita brigar com o scroll-behavior nativo) */
+html.scroll-js { scroll-behavior: auto; }
 
 /* Cartões reagem ao passar o mouse */
 .card-horario, .card, .padre-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
@@ -393,6 +434,28 @@ nav a.ativo { color: var(--branco); border-color: var(--dourado); }
   transform: translateY(-6px);
   box-shadow: 0 12px 24px rgba(79, 13, 20, 0.15);
 }
+/* Inclinação 3D com brilho que segue o mouse */
+.tilt {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--ty, 0px));
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+}
+.tilt.ativo { transition: transform 0.12s ease-out, box-shadow 0.3s ease; }
+.tilt:hover { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--ty, 0px)); }
+.tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 60%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.tilt.ativo::after { opacity: 1; }
+.tilt .icone, .tilt .icone-horario { transform: translateZ(34px); }
+
 button.btn { cursor: pointer; font-family: Arial, sans-serif; background: transparent; }
 .btn[hidden] { display: none; }
 .btn-vinho-borda:hover { background: var(--vinho); color: var(--branco); }
@@ -461,4 +524,7 @@ button.btn { cursor: pointer; font-family: Arial, sans-serif; background: transp
     transition-duration: 0.01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important;
   }
   .js .reveal { opacity: 1; transform: none; }
+  .hero::before { transform: none !important; }
+  .tilt, .logo-3d { transform: none !important; }
+  .tilt::after { display: none; }
 }

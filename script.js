@@ -12,6 +12,7 @@
   function $$(seletor, raiz) { return Array.prototype.slice.call((raiz || document).querySelectorAll(seletor)); }
 
   doc.classList.add('menu-js');
+  if (!reduzMovimento) doc.classList.add('scroll-js');
 
   /* ---------- Data e hora em Franca-SP ---------- */
   function agora() {
@@ -147,10 +148,18 @@
   var barra = $('#progresso');
   var topo = $('#topo');
   var esperandoQuadro = false;
+  var topoHero = $('.hero');
+  var versaoRolagem = 0;
 
   function aoRolar() {
     esperandoQuadro = false;
+    versaoRolagem++;
     var y = window.pageYOffset || doc.scrollTop || 0;
+    if (topoHero && !reduzMovimento && y < topoHero.offsetHeight + 200) {
+      // a foto de fundo anda a 35% da velocidade da página (no máximo 11% da altura do topo)
+      var par = Math.min(Math.max(y, 0) * 0.35, topoHero.offsetHeight * 0.11);
+      topoHero.style.setProperty('--par', par.toFixed(1) + 'px');
+    }
     var total = doc.scrollHeight - window.innerHeight;
     if (barra) barra.style.transform = 'scaleX(' + (total > 0 ? Math.min(y / total, 1) : 0) + ')';
     if (cabecalho) cabecalho.classList.toggle('rolou', y > 10);
@@ -167,9 +176,51 @@
   window.addEventListener('resize', aoRolar);
   aoRolar();
 
+  /* ---------- Rolagem animada (começa devagar, acelera e desacelera no fim) ---------- */
+  var tokenRolagem = 0;
+
+  function suavizar(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+
+  function rolarPara(destino) {
+    var inicio = window.pageYOffset;
+    var delta = destino - inicio;
+    if (Math.abs(delta) < 2) return;
+    var meu = ++tokenRolagem;
+    var duracao = Math.min(Math.max(Math.abs(delta) * 0.5, 600), 1200);
+    var t0 = null;
+    window.requestAnimationFrame(function passo(ts) {
+      if (meu !== tokenRolagem) return; // outra rolagem começou ou o visitante assumiu o controle
+      if (t0 === null) t0 = ts;
+      var f = Math.min((ts - t0) / duracao, 1);
+      window.scrollTo(0, inicio + delta * suavizar(f));
+      if (f < 1) window.requestAnimationFrame(passo);
+    });
+  }
+
+  if (!reduzMovimento) {
+    // se o visitante rolar por conta própria, a animação para na hora
+    ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (ev) {
+      window.addEventListener(ev, function () { tokenRolagem++; }, { passive: true });
+    });
+
+    $$('a[href^="#"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var id = a.getAttribute('href').slice(1);
+        var alvo = id ? document.getElementById(id) : null;
+        if (!alvo) return;
+        e.preventDefault();
+        var margem = parseFloat(window.getComputedStyle(alvo).scrollMarginTop) || 0;
+        rolarPara(alvo.getBoundingClientRect().top + window.pageYOffset - margem);
+        if (window.history && history.replaceState) history.replaceState(null, '', '#' + id);
+        alvo.setAttribute('tabindex', '-1');
+        alvo.focus({ preventScroll: true });
+      });
+    });
+  }
+
   if (topo) {
     topo.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: reduzMovimento ? 'auto' : 'smooth' });
+      if (reduzMovimento) window.scrollTo(0, 0); else rolarPara(0);
     });
   }
 
@@ -204,6 +255,8 @@
       var n = contagem.get(pai) || 0;
       contagem.set(pai, n + 1);
       el.style.setProperty('--atraso', (Math.min(n, 5) * 0.09).toFixed(2) + 's');
+      // cartões entram girando: os pares vêm da esquerda e os ímpares da direita
+      if (el.matches('.card-horario, .card, .padre-card')) el.style.setProperty('--giro', (n % 2 ? 14 : -14) + 'deg');
       el.classList.add('reveal');
     });
 
@@ -217,11 +270,57 @@
         window.setTimeout(function () {
           el.classList.remove('reveal', 'visivel');
           el.style.removeProperty('--atraso');
-        }, 1500);
+          el.style.removeProperty('--giro');
+        }, 1900);
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
     alvos.forEach(function (el) { obsRevelar.observe(el); });
+  }
+
+  /* ---------- Inclinação 3D (só em telas com mouse e sem pedido de menos movimento) ---------- */
+  var temMouse = !!(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+
+  function inclinar(el, forca, comBrilho, elevar) {
+    var caixa = null, versao = -1, quadro = false, px = 0.5, py = 0.5;
+
+    function medir() { caixa = el.getBoundingClientRect(); versao = versaoRolagem; }
+    function aplicar() {
+      quadro = false;
+      el.style.setProperty('--ry', ((px - 0.5) * forca).toFixed(2) + 'deg');
+      el.style.setProperty('--rx', ((0.5 - py) * forca).toFixed(2) + 'deg');
+      if (comBrilho) {
+        el.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
+        el.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
+      }
+    }
+
+    el.addEventListener('pointerenter', function () {
+      medir();
+      el.classList.add('ativo');
+      if (elevar) el.style.setProperty('--ty', '-6px');
+    });
+    el.addEventListener('pointermove', function (e) {
+      if (!caixa || versao !== versaoRolagem) medir();
+      px = Math.min(Math.max((e.clientX - caixa.left) / caixa.width, 0), 1);
+      py = Math.min(Math.max((e.clientY - caixa.top) / caixa.height, 0), 1);
+      if (!quadro) { quadro = true; window.requestAnimationFrame(aplicar); }
+    });
+    el.addEventListener('pointerleave', function () {
+      el.classList.remove('ativo');
+      el.style.setProperty('--rx', '0deg');
+      el.style.setProperty('--ry', '0deg');
+      if (elevar) el.style.setProperty('--ty', '0px');
+    });
+  }
+
+  if (temMouse && !reduzMovimento) {
+    $$('.card-horario, .card, .padre-card').forEach(function (el) {
+      el.classList.add('tilt');
+      inclinar(el, 14, true, true);
+    });
+    var brasao = $('#logo-3d');
+    if (brasao) inclinar(brasao, 30, false, false);
   }
 
   /* ---------- Contador de anos de história ---------- */
